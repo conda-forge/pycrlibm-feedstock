@@ -21,6 +21,7 @@ requirements:
     - python
     - pip
     - crlibm  # [unix]
+    - setuptools <60
   run:
     - python
 
