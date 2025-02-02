@@ -10,16 +10,21 @@ source:
   sha256: 48e17981f90d69c6bb0013f68bacbe7a157de864a533d15dd196ca7e98348a35
 
 build:
-  number: 1
-  script: "{{ PYTHON }} -m pip install . -vv"
+  number: 2
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
-    - {{ compiler('c') }}  # [unix]
+    - {{ compiler('c') }}        # [unix]
+    - {{ stdlib('c') }}          # [unix]
     - {{ compiler("m2w64_c") }}  # [win]
+    - {{ stdlib("m2w64_c") }}    # [win]
+    - cross-python               # [build_platform != target_platform]
+    - python                     # [build_platform != target_platform]
   host:
     - python
     - pip
+    - setuptools
     - crlibm  # [unix]
   run:
     - python
@@ -31,7 +36,6 @@ test:
 about:
   home: "https://github.com/taschini/pycrlibm"
   license: LGPL-2.0-or-later
-  license_family: LGPL
   license_file: 
     - LICENSE
     - crlibm/COPYING
